@@ -19,6 +19,16 @@ class SfLeads
     true
   end
 
+  def has_all_attr_valid?
+    return false unless valid?
+    return false unless @lead.last_name
+    return false unless @lead.company
+    return false unless @lead.job_title
+    return false unless @lead.phone
+    return false unless @lead.website
+    true
+  end
+
   private
     def valid_email
       return false unless @lead.email
