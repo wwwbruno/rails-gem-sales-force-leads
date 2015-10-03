@@ -9,6 +9,10 @@ end
 
 describe SfLeads do
 
+  before :each do
+    ENV.stub(:[]).with("SALES_FORCE_TOKEN").and_return("BiGsAlEsFoRcEtOkEn")
+  end
+
   it 'has a version number' do
     expect(SfLeads::VERSION).not_to be nil
   end
@@ -93,5 +97,13 @@ describe SfLeads do
     # Assert
     expect(lead.valid?).to be true
     expect(lead.has_all_attr_valid?).to be true
+  end
+
+  it 'get sales force url login' do
+    # Arrange
+    # Act
+    url = SfLeads::link_to_login('https://localhost:3000/auth/salesforce/callback')
+    # Assert
+    expect(url).to eq("https://login.salesforce.com/services/oauth2/authorize?response_type=token&client_id=BiGsAlEsFoRcEtOkEn&redirect_uri=https://localhost:3000/auth/salesforce/callback")
   end
 end

@@ -29,6 +29,11 @@ class SfLeads
     true
   end
 
+  def self.link_to_login(redirect_uri)
+    "https://login.salesforce.com/services/oauth2/authorize?response_type=token&client_id=" +
+      ENV['SALES_FORCE_TOKEN'] + "&redirect_uri=" + redirect_uri
+  end
+
   private
     def valid_email
       return false unless @lead.email
