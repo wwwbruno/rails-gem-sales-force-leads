@@ -10,6 +10,7 @@ end
 describe SfLeads do
 
   before :each do
+    ENV.stub(:[])
     ENV.stub(:[]).with("SALES_FORCE_TOKEN").and_return("BiGsAlEsFoRcEtOkEn")
   end
 
@@ -21,27 +22,18 @@ describe SfLeads do
     # Arrange
     usr = user.new
     usr.name = 'Bruno'
-    usr.email = 'bruno@disvolvi.com'
+    usr.last_name = 'Almeida'
+    usr.company = 'Disvolvi'
     # Act
     lead = SfLeads.new(usr)
     # Assert
     expect(lead.get).to equal(usr)
   end
 
-  it 'check invalid lead without email' do
+  it 'check invalid lead without last name and company' do
     # Arrange
     usr = user.new
     usr.name = 'Bruno'
-    # Act
-    lead = SfLeads.new(usr)
-    # Assert
-    expect(lead.valid?).to be false
-  end
-
-  it 'check invalid lead without name' do
-    # Arrange
-    usr = user.new
-    usr.email = 'bruno@disvolvi.com'
     # Act
     lead = SfLeads.new(usr)
     # Assert
@@ -52,6 +44,8 @@ describe SfLeads do
     # Arrange
     usr = user.new
     usr.name = 'Bruno'
+    usr.last_name = 'Almeida'
+    usr.company = 'Disvolvi'
     usr.email = 'bruno@disvolvicom'
     # Act
     lead = SfLeads.new(usr)
@@ -62,8 +56,8 @@ describe SfLeads do
   it 'check valid lead' do
     # Arrange
     usr = user.new
-    usr.name = 'Bruno'
-    usr.email = 'bruno@disvolvi.com'
+    usr.last_name = 'Almeida'
+    usr.company = 'Disvolvi'
     # Act
     lead = SfLeads.new(usr)
     # Assert
@@ -74,7 +68,9 @@ describe SfLeads do
     # Arrange
     usr = user.new
     usr.name = 'Bruno'
+    usr.last_name = 'Almeida'
     usr.email = 'bruno@disvolvi.com'
+    usr.company = 'Disvolvi'
     # Act
     lead = SfLeads.new(usr)
     # Assert
@@ -105,5 +101,34 @@ describe SfLeads do
     url = SfLeads::link_to_login('https://localhost:3000/auth/salesforce/callback')
     # Assert
     expect(url).to eq("https://login.salesforce.com/services/oauth2/authorize?response_type=token&client_id=BiGsAlEsFoRcEtOkEn&redirect_uri=https://localhost:3000/auth/salesforce/callback")
+  end
+
+  it 'try to create an invalid lead without e-mail in Sales Force' do
+    # Arrange
+    usr = user.new
+    usr.name = 'Bruno'
+    # Act
+    lead = SfLeads.new(usr)
+    result = lead.send_to_sales_force('aCcEsStOkEn',
+      'http://instance.salesforce.com')
+    # Assert
+    expect(result).to be false
+  end
+
+  it 'create a valid lead in Sales Force' do
+    # Arrange
+    usr = user.new
+    usr.name = 'Bruno'
+    usr.email = 'bruno@disvolvi.com'
+    usr.company = 'Disvolvi'
+    usr.last_name = 'Almeida'
+    usr.job_title = 'Full-stack Developer'
+    # Act
+    lead = SfLeads.new(usr)
+    lead.stub(:send_to_sales_force).and_return(true)
+    result = lead.send_to_sales_force('aCcEsStOkEn',
+      'http://instance.salesforce.com')
+    # Assert
+    expect(result).to be true
   end
 end
