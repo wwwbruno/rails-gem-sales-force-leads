@@ -35,9 +35,9 @@ class SfLeads
     create_lead(access_token, instace_url)
   end
 
-  def self.link_to_login(redirect_uri)
-    "https://login.salesforce.com/services/oauth2/authorize?response_type=token&client_id=" +
-      ENV['SALES_FORCE_TOKEN'] + "&redirect_uri=" + redirect_uri
+  def self.link_to_login
+    "https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=" +
+      ENV['SALES_FORCE_TOKEN'] + "&redirect_uri=" + ENV['SALES_FORCE_REDIRECT_URI']
   end
 
   private

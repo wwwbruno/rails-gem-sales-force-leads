@@ -12,6 +12,7 @@ describe SfLeads do
   before :each do
     ENV.stub(:[])
     ENV.stub(:[]).with("SALES_FORCE_TOKEN").and_return("BiGsAlEsFoRcEtOkEn")
+    ENV.stub(:[]).with("SALES_FORCE_REDIRECT_URI").and_return("https://localhost:3000/auth/salesforce/callback")
   end
 
   it 'has a version number' do
@@ -98,9 +99,9 @@ describe SfLeads do
   it 'get sales force url login' do
     # Arrange
     # Act
-    url = SfLeads::link_to_login('https://localhost:3000/auth/salesforce/callback')
+    url = SfLeads::link_to_login
     # Assert
-    expect(url).to eq("https://login.salesforce.com/services/oauth2/authorize?response_type=token&client_id=BiGsAlEsFoRcEtOkEn&redirect_uri=https://localhost:3000/auth/salesforce/callback")
+    expect(url).to eq("https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=BiGsAlEsFoRcEtOkEn&redirect_uri=https://localhost:3000/auth/salesforce/callback")
   end
 
   it 'try to create an invalid lead without e-mail in Sales Force' do
