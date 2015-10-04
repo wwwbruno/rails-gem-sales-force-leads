@@ -69,10 +69,25 @@ describe SfLeads do
   it 'check valid lead but has no all attributes' do
     # Arrange
     usr = user.new
-    usr.name = 'Bruno'
     usr.last_name = 'Almeida'
-    usr.email = 'bruno@disvolvi.com'
     usr.company = 'Disvolvi'
+    # Act
+    lead = SfLeads.new(usr)
+    # Assert
+    expect(lead.valid?).to be true
+    expect(lead.has_all_attr_valid?).to be false
+  end
+
+  it 'check valid lead but with some attributes empty' do
+    # Arrange
+    usr = user.new
+    usr.name = ''
+    usr.email = ''
+    usr.last_name = 'Almeida'
+    usr.company = 'Disvolvi'
+    usr.job_title = ''
+    usr.phone = ''
+    usr.website = ''
     # Act
     lead = SfLeads.new(usr)
     # Assert
@@ -105,7 +120,7 @@ describe SfLeads do
     expect(url).to eq("https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=BiGsAlEsFoRcEtOkEn&redirect_uri=https://localhost:3000/auth/salesforce/callback")
   end
 
-  it 'try to create an invalid lead without e-mail in Sales Force' do
+  it 'try to create an invalid lead without last name in Sales Force' do
     # Arrange
     usr = user.new
     usr.name = 'Bruno'

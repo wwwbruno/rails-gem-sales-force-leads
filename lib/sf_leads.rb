@@ -16,12 +16,15 @@ class SfLeads
   end
 
   def valid?
-    return true if self.lead.last_name && self.lead.company && valid_email?
+    return true if !self.lead.last_name.to_s.empty? &&
+    !self.lead.company.to_s.empty? && valid_email?
     false
   end
 
   def has_all_attr_valid?
-    return true if self.valid? && self.lead.name && self.lead.job_title && self.lead.phone && self.lead.website
+    return true if self.valid? && !self.lead.name.to_s.empty? &&
+    !self.lead.job_title.to_s.empty? && !self.lead.phone.to_s.empty? &&
+    !self.lead.website.to_s.empty?
     false
   end
 
@@ -56,7 +59,7 @@ class SfLeads
 
   private
     def valid_email?
-      if self.lead.email
+      if !self.lead.email.to_s.empty?
         self.lead.email.match VALID_EMAIL_ADDRESS_REGEX
       else
         true
