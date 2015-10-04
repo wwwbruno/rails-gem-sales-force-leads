@@ -1,5 +1,6 @@
 require "sf_leads/version"
 require "restforce"
+require 'net/http'
 
 class SfLeads
   VALID_EMAIL_ADDRESS_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
