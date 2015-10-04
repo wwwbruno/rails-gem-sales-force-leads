@@ -12,6 +12,7 @@ describe SfLeads do
   before :each do
     ENV.stub(:[])
     ENV.stub(:[]).with("SALES_FORCE_TOKEN").and_return("BiGsAlEsFoRcEtOkEn")
+    ENV.stub(:[]).with("SALES_FORCE_CLIENT_ID").and_return("123456789")
     ENV.stub(:[]).with("SALES_FORCE_REDIRECT_URI").and_return("https://localhost:3000/auth/salesforce/callback")
   end
 
@@ -131,5 +132,23 @@ describe SfLeads do
       'http://instance.salesforce.com')
     # Assert
     expect(result).to be true
+  end
+
+  it 'get the access token from code' do
+    # Arrange
+    SfLeads.stub(:get_access_token).and_return({access_token:"aCcEsStOkEn"})
+    # Act
+    result = SfLeads::get_access_token('cOdEfRoMsAlEsFoRcE')
+    # Assert
+    expect(result).to eq({access_token:"aCcEsStOkEn"})
+  end
+
+  it 'get invalid access token from code' do
+    # Arrange
+    SfLeads.stub(:get_access_token).and_return({error:"invalid_grant", error_description:"expired authorization code"})
+    # Act
+    result = SfLeads::get_access_token('InVaLiDcOdEfRoMsAlEsFoRcE')
+    # Assert
+    expect(result).to eq({error:"invalid_grant", error_description:"expired authorization code"})
   end
 end

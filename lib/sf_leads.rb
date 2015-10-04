@@ -40,6 +40,25 @@ class SfLeads
       ENV['SALES_FORCE_TOKEN'] + "&redirect_uri=" + ENV['SALES_FORCE_REDIRECT_URI']
   end
 
+  def self.get_access_token(code)
+    form_data = 'code=' << code
+    form_data << '&grant_type=authorization_code'
+    form_data << '&client_id=' << ENV['SALES_FORCE_TOKEN']
+    form_data << '&client_secret=' << ENV['SALES_FORCE_CLIENT_ID']
+    form_data << '&redirect_uri=' << ENV['SALES_FORCE_REDIRECT_URI']
+
+    uri = URI.parse("https://login.salesforce.com/services/oauth2/token")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    req = Net::HTTP::Post.new("https://login.salesforce.com/services/oauth2/token")
+    req.content_type = "application/x-www-form-urlencoded"
+    req["Accept"] = '*/*'
+    req.body = form_data
+    response = http.request req
+
+    JSON.parse(response.body)
+  end
+
   private
     def valid_email
       if @lead.email
@@ -52,7 +71,9 @@ class SfLeads
     def create_lead(access_token, instace_url)
       client = get_sales_force_client(access_token, instace_url)
       # account = client.create('Account', name: @lead.name)
-      client.create('Lead', FirstName: @lead.name, LastName: @lead.last_name, Company: @lead.company)
+      client.create('Lead', FirstName: @lead.name, LastName: @lead.last_name,
+        Company: @lead.company, Email: @lead.email, Phone: @lead.phone,
+        Title: @lead.job_title, Website: @lead.website)
     end
 
     def get_sales_force_client(access_token, instace_url)
