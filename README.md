@@ -9,13 +9,13 @@ This Gem will help you to authenticate in Sales Force API and create leads. Ther
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'sf_leads', :git => 'https://github.com/wwwbruno/ruby-gem-sales-force-leads.git'
+gem 'sf_leads', :github => 'wwwbruno/ruby-gem-sales-force-leads'
 ```
 
 And then execute:
 
     $ bundle
-    
+
 Set token, client id and redirect URI to Env variables configured in your Sales Force Connect App:
 
 ```shell
@@ -76,4 +76,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/wwwbru
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
