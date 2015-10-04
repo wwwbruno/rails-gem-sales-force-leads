@@ -1,8 +1,8 @@
+[![Build Status](https://travis-ci.org/wwwbruno/ruby-gem-sales-force-leads.svg?branch=master)](https://travis-ci.org/wwwbruno/ruby-gem-sales-force-leads)
+
 # SfLeads
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sf_leads`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This Gem will help you to authenticate in Sales Force API and create leads. There are 3 main methods to generate login link, get access token and create the lead.
 
 ## Installation
 
@@ -15,20 +15,62 @@ gem 'sf_leads', :git => 'https://github.com/wwwbruno/ruby-gem-sales-force-leads.
 And then execute:
 
     $ bundle
+    
+Set token, client id and redirect URI to Env variables configured in your Sales Force Connect App:
+
+```shell
+export SALES_FORCE_TOKEN='8h8FJ29Kq3Hdd7HD79hd9DmfqPlZjUxWVbjMJFD4mR2RDejz.if9D8HD9nt920tmOB2.LQ2qrV2qrellkdif.9HJ'
+export SALES_FORCE_CLIENT_ID='1968375613319381757'
+export SALES_FORCE_REDIRECT_URI='https://localhost:3000/auth/salesforce/callback'
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+To gerenate the login link, call this method (it will return a string with the full url):
 
-## Development
+```ruby
+SfLeads::link_to_login
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+The login link will redirect the user the the redirect url with a code parameter that you will use to get the access token and instance url with the following method:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+result = SfLeads::get_access_token(params[:code])
+if result['access_token'] && result['instance_url']
+  # save the access token and the instance url
+else
+  # the error message should be in result['error']
+end
+```
+
+With the access token and instance url in hands, you can create the lead:
+
+```ruby
+# create your User class
+usr = User.new
+usr.name = 'Bruno'
+usr.email = 'bruno@disvolvi.com'
+usr.last_name = 'Almeida'
+usr.company = 'Disvolvi'
+usr.job_title = 'Full-stack Developer'
+usr.phone = '+55 48 8888-8888'
+usr.website = 'http://disvolvi.com/'
+
+# initialize the SFLeads class
+lead = SfLeads.new(usr)
+
+# check if the lead is valid
+lead.valid?
+# => true
+
+# create the lead
+lead.send_to_sales_force(access_token, instance_url)
+# => true
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/sf_leads. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/wwwbruno/sf_leads. This project is intended to be a safe, welcoming space for collaboration.
 
 
 ## License
