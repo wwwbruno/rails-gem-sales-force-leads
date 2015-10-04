@@ -9,16 +9,12 @@ TODO: Delete this and the text above, and describe your gem
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'sf_leads'
+gem 'sf_leads', :git => 'https://github.com/wwwbruno/ruby-gem-sales-force-leads.git'
 ```
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install sf_leads
 
 ## Usage
 
