@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/wwwbruno/ruby-gem-sales-force-leads.svg?branch=master)](https://travis-ci.org/wwwbruno/ruby-gem-sales-force-leads) [![Code Climate](https://codeclimate.com/github/wwwbruno/ruby-gem-sales-force-leads/badges/gpa.svg)](https://codeclimate.com/github/wwwbruno/ruby-gem-sales-force-leads)
+[![Build Status](https://travis-ci.org/wwwbruno/ruby-gem-sales-force-leads.svg?branch=master)](https://travis-ci.org/wwwbruno/ruby-gem-sales-force-leads) [![Code Climate](https://codeclimate.com/github/wwwbruno/ruby-gem-sales-force-leads/badges/gpa.svg)](https://codeclimate.com/github/wwwbruno/ruby-gem-sales-force-leads) [![Test Coverage](https://codeclimate.com/github/wwwbruno/ruby-gem-sales-force-leads/badges/coverage.svg)](https://codeclimate.com/github/wwwbruno/ruby-gem-sales-force-leads/coverage)
 
 # SfLeads
 
